@@ -1,4 +1,5 @@
 ﻿import os
+from . import models
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
@@ -6,6 +7,8 @@ from .database import engine, Base, SessionLocal
 from .auth import mint_jwt
 from .schemas import LoginIn, TokenOut
 from .routers import customers, transactions
+from .seed import seed_if_empty
+
 
 app = FastAPI(title="Syntropy Mini API")
 
@@ -18,6 +21,14 @@ app.add_middleware(
     allow_headers=["*"],
     allow_credentials=True,
 )
+
+@app.on_event("startup")
+def run_seed_on_startup():
+    db = SessionLocal()
+    try:
+        seed_if_empty(db)
+    finally:
+        db.close()
 
 # For the demo: create tables at startup
 with engine.begin() as conn:
