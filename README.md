@@ -105,3 +105,21 @@ Auth first: Frontend performs POST /auth/login on mount, then sets Authorization
 "== Customers =="; $customers=Invoke-RestMethod -Method Get -Uri http://localhost:8000/customers -Headers $headers; $customers|Format-Table id,name,email -AutoSize
 if($customers){ $cid=$customers[0].id; "== Txns for customer $cid =="; Invoke-RestMethod -Method Get -Uri ("http://localhost:8000/customers/{0}/transactions" -f $cid) -Headers $headers | Format-Table id,amount,ts -AutoSize }
 
+## Screenshots
+
+### Customer list loaded
+![Customers List](./screenshots/Screenshot%202025-09-04%20094937.png)
+
+### Search filter applied
+![Search Filter](./screenshots/Screenshot%202025-09-04%20094946.png)
+
+### Customer detail view
+![Customer Detail](./screenshots/Screenshot%202025-09-04%20094953.png)
+
+### Adding a transaction
+![Add Transaction](./screenshots/Screenshot%202025-09-04%20095004.png)
+
+### Updated transaction list
+![Updated Transactions](./screenshots/Screenshot%202025-09-04%20095011.png)
+
+
