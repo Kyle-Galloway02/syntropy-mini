@@ -48,47 +48,47 @@ Full-stack demo built to practice end-to-end feature work for a fintech-style da
 
 ## Quickstart (Windows / PowerShell)
 
-### 0) Clone
-```powershell
+## 0) Clone
+powershell
 git clone https://github.com/Kyle-Galloway02/syntropy-mini.git
 cd syntropy-mini
 
-1) Generate .env via Terraform
+## 1) Generate .env via Terraform
 cd .\infra\terraform
 terraform init
 terraform apply -auto-approve
 cd ..\..
 
-2) Start backend + DB
+## 2) Start backend + DB
 docker compose up --build
 
-3) Start Frontend
+## 3) Start Frontend
 cd .\frontend\syntropy-frontend
 npm install
 npm run dev
 
-API (quick reference)
-Auth
+### API (quick reference)
+## Auth
 POST /auth/login
 Body: {"username":"admin","password":"admin"}
 → { "access_token": "<jwt>", "token_type": "bearer" }
 
-Customers
+## Customers
 POST /auth/login
 Body: {"username":"admin","password":"admin"}
 → { "access_token": "<jwt>", "token_type": "bearer" }
 
-Transactions
+## Transactions
 GET /customers/{id}/transactions
 → 200 [{id, amount, ts}, ...]
 
-POST /customers/{id}/transactions
+## POST /customers/{id}/transactions
 Body: { "amount": 12.34 }
 → 200 {id, amount, ts}
 
 
 
-Development workflow highlights
+## Development workflow highlights
 
 Infrastructure as Code: Terraform writes .env; Compose pulls variables via ${VAR}.
 
@@ -99,7 +99,7 @@ Local-friendly: Everything runs on localhost; CORS set to Vite origin.
 Auth first: Frontend performs POST /auth/login on mount, then sets Authorization on Axios.
 
 
-Verification Script (powershell)
+## Verification Script (powershell)
 "== Health =="; (Invoke-WebRequest http://localhost:8000/health).Content
 "== Login =="; $body=@{username="admin";password="admin"}|ConvertTo-Json; $login=Invoke-RestMethod -Method Post -Uri http://localhost:8000/auth/login -Body $body -ContentType "application/json"; $token=$login.access_token; $headers=@{Authorization="Bearer $token"}
 "== Customers =="; $customers=Invoke-RestMethod -Method Get -Uri http://localhost:8000/customers -Headers $headers; $customers|Format-Table id,name,email -AutoSize
